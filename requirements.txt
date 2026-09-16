@@ -1,0 +1,1 @@
+# This project uses Python's built-in libraries (json). No external installation required.
