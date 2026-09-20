@@ -1,1 +1,2 @@
-# This project uses Python's built-in libraries (json). No external installation required.
+# პროექტი იყენებს მხოლოდ Python-ის ჩაშენებულ ბიბლიოთეკებს (json).
+# გარე ბიბლიოთეკების ინსტალაცია არ არის საჭირო.
