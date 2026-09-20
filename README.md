@@ -1,17 +1,21 @@
-# Student Grade Management System
+# IT Step სტუდენტების ქულების მართვის სისტემა
 
-## Description
-A functional terminal-based Python application developed as a Midterm Project for IT Step Academy Georgia (Lesson 50). This project tracks student evaluations, saves records permanently, and handles potential numeric input crashes.
+## აღწერა   
+მოდულარული Python საკონსოლომდებარე აპლიკაცია სტუდენტების აკადემიური მოსწრების მონიტორინგისთვის. პროექტი აგებულია ობიექტზე ორიენტირებული პროგრამირების (OOP) პრინციპების დაცვით.
 
-## Features
-- Permanent local data storage via structured JSON serialization.
-- Simple terminal UI for adding and viewing entries.
-- Exception handling to safely catch invalid user inputs.
+## ფუნქციონალი და არქიტექტურა
+- კოდის სრული მოდულარული დაყოფა: კონფიგურაცია, მონაცემთა შენახვა, მოდელები და ძირითადი მენიუ.
+- მონაცემთა მუდმივი შენახვა ლოკალურ JSON ფაილში.
+- შეცდომების დამუშავება (Exception Handling) არავალიდური ციფრული მონაცემების შეყვანისას პროგრამის გათიშვის თავიდან ასაცილებლად.
 
-## Installation & Execution
-1. Clone this repository to your computer.
-2. Open your terminal in the directory.
-3. Run the following command:
+## ტექნოლოგიები
+- Python 3.x
+- JSON (ჩაშენებული ბიბლიოთეკა)
+
+## ინსტალაცია და გაშვება
+1. მოახდინეთ პროექტის კლონირება GitHub რეპოზიტორიიდან.
+2. გახსენით ტერმინალი პროექტის საქაღალდეში.
+3. გაუშვით პროგრამა შემდეგი ბრძანებით:
    ```bash
    python main.py
    ```
