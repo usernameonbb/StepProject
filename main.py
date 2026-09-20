@@ -3,23 +3,39 @@ import json
 FILENAME = "grades.json"
 
 
-def load_grades():
-    """ტვირთავს სტუდენტების მონაცემებს JSON ფაილიდან. ფაილის არარსებობისას თავიდან არიდებს პროგრამის გათიშვას."""
+class StudentRegistry:
+
+    def __init__(self, raw_data: dict):
+        self.records = raw_data
+
+    def student_exists(self, name: str) -> bool:
+        return name in self.records
+
+    def add_or_update(self, name: str, grade: float) -> None:
+        self.records[name] = grade
+
+    def delete(self, name: str) -> None:
+        if self.student_exists(name):
+            del self.records[name]
+
+
+def load_grades() -> dict:
     try:
-        with open(FILENAME, 'r') as file:
+        with open(FILENAME, "r", encoding="utf-8") as file:
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
-        return {}  # აბრუნებს ცარიელ ლექსიკონს, თუ ფაილი ჯერ არ არსებობს
+        return {}
 
 
-def save_grades(data):
-    """მიმდინარე ლექსიკონის მონაცემებს მუდმივად ინახავს JSON ფაილში."""
-    with open(FILENAME, 'w') as file:
-        json.dump(data, file, indent=4)
+def save_grades(data: dict) -> None:
+    try:
+        with open(FILENAME, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4)
+    except IOError as error:
+        print(f"Error saving data: {error}")
 
 
-def add_student_grade(data):
-    """ამატებს ახალ სტუდენტს და პროგრამულად ამუშავებს შეყვანილ ციფრულ მონაცემებს."""
+def add_student_grade(registry: StudentRegistry) -> None:
     name = input("Enter student name: ").strip()
     if not name:
         print("Name cannot be empty!")
@@ -27,46 +43,43 @@ def add_student_grade(data):
 
     score_input = input(f"Enter grade for {name}: ")
 
-    # ტექნიკური შეცდომების დამუშავება: ეს ნაწილი აკმაყოფილებს შეფასების კრიტერიუმებს
     try:
         score = float(score_input)
-        if score < 0 or score > 100:
+        if not (0 <= score <= 100):
             print("Grade must be between 0 and 100!")
             return
 
-        data[name] = score
-        save_grades(data)
+        registry.add_or_update(name, score)
+        save_grades(registry.records)
         print(f"Successfully saved {name}'s grade.")
     except ValueError:
         print("Error: You must enter a valid numeric grade!")
 
 
-def view_all_grades(data):
-    """გამოაქვს ყველა არსებული ჩანაწერი გასაგებ და სუფთა ფორმატში."""
-    if not data:
+def view_all_grades(registry: StudentRegistry) -> None:
+    if not registry.records:
         print("No student records found.")
         return
 
     print("\n--- Student Records ---")
-    for name, grade in data.items():
+    for name, grade in registry.records.items():
         print(f"Student: {name} | Grade: {grade}")
 
 
-def delete_student_grade(data):
-    """აშლის სტუდენტის ჩანაწერს მონაცემთა ბაზიდან და ანახლებს JSON ფაილს."""
+def delete_student_grade(registry: StudentRegistry) -> None:
     name = input("Enter student name to delete: ").strip()
 
-    if name in data:
-        del data[name]
-        save_grades(data)
+    if registry.student_exists(name):
+        registry.delete(name)
+        save_grades(registry.records)
         print(f"Successfully deleted {name}'s record.")
     else:
         print(f"Error: Student '{name}' not found in the records.")
 
 
-def main_menu():
-    """მართავს აპლიკაციის მთავარ საკონტროლო ციკლსა და მენიუს."""
-    student_data = load_grades()
+def main_menu() -> None:
+    raw_data = load_grades()
+    registry = StudentRegistry(raw_data)
 
     while True:
         print("\n=== IT Step Grade Manager ===")
@@ -78,16 +91,20 @@ def main_menu():
         choice = input("Select an option (1-4): ")
 
         if choice == "1":
-            add_student_grade(student_data)
+            add_student_grade(registry)
         elif choice == "2":
-            view_all_grades(student_data)
+            view_all_grades(registry)
         elif choice == "3":
-            delete_student_grade(student_data)
+            delete_student_grade(registry)
         elif choice == "4":
             print("Exiting program. Process killed. Goodbye!")
             break
         else:
             print("Invalid input! Please type 1, 2, 3, or 4.")
+
+
+if __name__ == "__main__":
+    main_menu()
 
 
 if __name__ == "__main__":
