@@ -86,7 +86,7 @@ def main_menu() -> None:
         print("1. Add/Update Student Grade")
         print("2. View All Grades")
         print("3. Delete Student Record")
-        print("4. Exit Application")
+        print("4. Exit Aplication")
 
         choice = input("Select an option (1-4): ")
 
